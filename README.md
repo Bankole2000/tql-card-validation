@@ -17,12 +17,11 @@ I tried to implement it with concepts like Routing, Middleware, and Response met
 
 
 
-
 ## How to use
 
 * Register a user by posting `username`, `email` and `password` to `/api/register`;
 * Login to user account by posting `email` and `password` to `/api/login` to get `accessToken`
-* Use Access token to send card validation request to `/api/validate-card`
+* Use Access token in request header `Authorization: Bearer <accessToken>` to send card validation request to `/api/validate-card`
 
 
 
@@ -48,10 +47,10 @@ I tried to implement it with concepts like Routing, Middleware, and Response met
         "valid": true,
         "message": "Valid Card", 
         "card": {
-          ...cardDetails
+          //...cardDetails
         }
     }
 }
 ```
 ## XML Response 
-TO get response in XML - simply change the `content-type` in the header to `application/xml`
+To get response in XML - simply change the `content-type` in the header to `application/xml`
