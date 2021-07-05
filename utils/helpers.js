@@ -140,7 +140,7 @@ helpers.getRoutes = (req) => {
       url: `${baseURL}register`,
       method: "POST",
       description: "Register to get a new Auth token",
-      data: null,
+      data: "username, email, password",
       authorization: null
     },
     {
@@ -197,7 +197,6 @@ helpers.getRoutes = (req) => {
       data: null,
       authorization: "Bearer token in header",
     },
-
   ]
 }
 
