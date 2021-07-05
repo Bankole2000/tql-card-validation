@@ -9,7 +9,7 @@ I tried to implement it with concepts like Routing, Middleware, and Response met
 ## Endpoints
 | S/N | Verb | Endpoint           | Description                                                       |
 | ---:| ---- | ------------------ | ----------------------------------------------------------------- |
-|   1 | Get  | /                  | Home route - API Info                                             |
+|   1 | Get  | `/` or `/api`      | Home route - API Info                                             |
 |   2 | Post | /api/register      | Register with `username` `email` and `Password`                   |
 |   3 | Post | /api/login         | Login with `email` and `password` to get `accessToken` for header |
 |   4 | Get  | /api/token         | Requires Bearer Token - Get logged in user info                   |
