@@ -92,7 +92,7 @@ lib.update = (dir, file, data) => {
 };
 
 // FUNCTION: DELETE:
-lib.delete = (dir, file, callback) => {
+lib.delete = (dir, file) => {
   return new Promise((resolve, reject) => {
     // subFunction: Unlink the file - i.e. Delete
     fs.unlink(`${lib.baseDir}${dir}/${file}.json`, (err) => {

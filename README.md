@@ -7,15 +7,16 @@ The API was built using NodeJs only. No frameworks or packages.<br /><br />
 I tried to implement it with concepts like Routing, Middleware, and Response methods to make the API development easier and more organized. I also implemented a simple database using JSON files for user authentication, storing user cards, and making withdrawals and deposits<br /><br />
 
 ## Endpoints
-| S/N | Verb | Endpoint           | Description                                                |
-| ---:| ---- | ------------------ | ---------------------------------------------------------- |
-|   1 | Get  | /                  | Home route - API Info                                      |
-|   2 | Post | /api/register      | Register with `username` `email` and `Password`                  |
+| S/N | Verb | Endpoint           | Description                                                       |
+| ---:| ---- | ------------------ | ----------------------------------------------------------------- |
+|   1 | Get  | /                  | Home route - API Info                                             |
+|   2 | Post | /api/register      | Register with `username` `email` and `Password`                   |
 |   3 | Post | /api/login         | Login with `email` and `password` to get `accessToken` for header |
-|   4 | Get  | /api/token         | Requires Bearer Token - Get logged in user info       |
-|   5 | Post | /api/validate-card | Validate Card details                                         |
-|   6 | Post | /api/deposit       | Requires Bearer token, valid card details and `amount` field             |
-|   7 | Post | /api/withdraw      | Requires Bearer token, valid card details and `amount` field                                                           |
+|   4 | Get  | /api/token         | Requires Bearer Token - Get logged in user info                   |
+|   5 | Post | /api/validate-card | Validate Card details                                             |
+|   6 | Post | /api/deposit       | Requires Bearer token, valid card details and `amount` field      |
+|   7 | Post | /api/withdraw      | Requires Bearer token, valid card details and `amount` field      |
+|   8 | Get  | /api/logout        | Requires Bearer token, logs user out (i.e. destroys/invalidates token)                                                                  |
 
 
 

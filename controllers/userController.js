@@ -142,7 +142,7 @@ const checkBalance = async (req, res) => {
 
 }
 
-const makeWidthdrawal = async (req, res) => {
+const makeWithdrawal = async (req, res) => {
   const { authData } = req;
   const { cardNumber, expirationDate, email, cvv2, phoneNumber, mobile, amount } = req.body;
   const fieldValidator = new FieldValidator(req.body);
@@ -236,4 +236,15 @@ const makeDeposit = async (req, res) => {
   }
 }
 
-module.exports = { registerUser, loginUser, getUser, validateCard, makeWidthdrawal, makeDeposit, checkBalance }
+const logout = async (req, res) => {
+  const { authData } = req;
+  console.log(authData);
+  const { err: deleteError } = await dataBase.delete('tokens', authData.accessToken)
+  if (deleteError) {
+    res.status(400).send({ message: "There was an error logging you out" })
+    return
+  }
+  res.status(200).send({ message: "Logged out Successfully" });
+}
+
+module.exports = { registerUser, loginUser, getUser, validateCard, makeWithdrawal, makeDeposit, checkBalance, logout }

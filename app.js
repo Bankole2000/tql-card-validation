@@ -28,9 +28,11 @@ app.get("/api/token", checkUserAuth, userController.getUser)
 
 app.post("/api/validate-card", checkUserAuth, userController.validateCard)
 
-app.post("/api/withdraw", checkUserAuth, userController.makeWidthdrawal)
+app.post("/api/withdraw", checkUserAuth, userController.makeWithdrawal)
 
 app.post("api/deposit", checkUserAuth, userController.makeDeposit)
+
+app.get("api/logout", checkUserAuth, userController.logout)
 
 app.listen(PORT, () => {
   console.log(`Server running on Port ${PORT}`);
