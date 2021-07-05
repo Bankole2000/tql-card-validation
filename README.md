@@ -40,7 +40,7 @@ I tried to implement it with concepts like Routing, Middleware, and Response met
 ```
 
 * Response (json - success)
-```json
+```js
 {
     "status": 200,
     "data": {
