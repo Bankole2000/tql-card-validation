@@ -110,12 +110,9 @@ const validateCard = async (req, res) => {
   const { errors, data: cardData } = fieldValidator;
   if (!errors.length) {
     cardData.issuer = helpers.creditCardType(cardNumber) ? helpers.creditCardType(cardNumber) : 'Unknown';
-    // console.log(helpers.creditCardType(cardNumber));
+
     const { err: readError, data: userData } = await dataBase.read('users', authData.email);
 
-    // if (readError) {
-    //   console.log({ readError });
-    // }
     const hasBeenUsedBefore = helpers.hasUsedCardBefore(userData.cards, cardNumber)
     console.log({ userData, hasBeenUsedBefore });
     if (userData.cards.length > 0 && hasBeenUsedBefore) {

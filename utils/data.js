@@ -42,12 +42,12 @@ lib.read = (dir, file) => {
   return new Promise((resolve, reject) => {
     fs.readFile(`${lib.baseDir}${dir}/${file}.json`, 'utf8', (err, data) => {
       if (!err && data) {
-        // console.log("file Read");
+
         // const parsedData = helpers.parseJsonToObject(data);
         const parsedData = JSON.parse(data);
         resolve({ err: false, data: parsedData })
       } else {
-        // console.log("file Not read");
+
         resolve({ err: "File Not Found", data })
       }
     });
@@ -123,5 +123,4 @@ lib.list = (dir, callback) => {
   })
 };
 
-// Export the module
 module.exports = lib;

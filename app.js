@@ -1,8 +1,4 @@
-// const CardController = require("./controllers/cardController.js");
-
-// const Validate = require("./middleware/Validate.js");
 const server = require("./server/index.js");
-
 
 const app = server();
 
@@ -13,6 +9,14 @@ const { getRoutes } = require('./utils/helpers');
 const userController = require('./controllers/userController');
 const { checkUserAuth } = require("./middleware/userAuth")
 app.get('/', (req, res) => {
+  res
+    .status(200)
+    .send({
+      message: "Welcome to the card validation API", routes: getRoutes(req)
+    });
+});
+
+app.get('/api', (req, res) => {
   res
     .status(200)
     .send({

@@ -21,8 +21,4 @@ const checkUserAuth = async (req, res) => {
   }
 }
 
-const cardIsValid = async (req, res) => {
-
-}
-
 module.exports = { checkUserAuth }

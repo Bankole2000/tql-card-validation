@@ -126,8 +126,6 @@ class FieldValidator {
     }
     return this
   }
-
-
 }
 
 module.exports = FieldValidator

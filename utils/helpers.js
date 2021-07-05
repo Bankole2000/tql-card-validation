@@ -74,8 +74,6 @@ helpers.verifyToken = async (id, email, callback) => {
 };
 
 helpers.hasUsedCardBefore = (userCards, cardNumber) => {
-  oldNumbers = userCards.map(card => card.cardNumber);
-
   const formerUse = userCards.filter(card => card.cardNumber == cardNumber);
   if (formerUse.length > 0) {
     return true
@@ -129,7 +127,7 @@ helpers.getRoutes = (req) => {
   return [
     {
       name: "home",
-      path: `/`,
+      path: [`/`, `/api`],
       url: `${baseURL}`,
       method: "GET",
       description: "Welcome Route",
