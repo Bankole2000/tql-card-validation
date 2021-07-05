@@ -123,6 +123,77 @@ helpers.creditCardType = (cc) => {
   return undefined;
 };
 
+helpers.getRoutes = (req) => {
+
+  const baseURL = 'http://' + req.headers.host + '/api/';
+  return [
+    {
+      name: "home",
+      path: `/`,
+      url: `${baseURL}`,
+      method: "GET",
+      description: "Welcome Route",
+      data: null,
+      authorization: null
+    },
+    {
+      name: "register",
+      path: `/api/register`,
+      url: `${baseURL}register`,
+      method: "POST",
+      description: "Register to get a new Auth token",
+      data: null,
+      authorization: null
+    },
+    {
+      name: "Check Token",
+      path: `/api/token`,
+      url: `${baseURL}token`,
+      method: "GET",
+      description: "Check Auth Status - also check account balance and cards",
+      data: null,
+      authorization: "Bearer token in header"
+    },
+    {
+      name: "Login",
+      path: `/api/login`,
+      url: `${baseURL}login`,
+      method: "GET",
+      description: "Login with email and password to get access Token. Access token is needed in authorization header for authenticated routes",
+      data: "email, password",
+      authorization: null
+    },
+    {
+      name: "Validate A Card",
+      path: `/api/validate-card`,
+      url: `${baseURL}validate-card`,
+      method: "GET",
+      description: "Validate A Card - adds card to user account",
+      data: "Card details",
+      authorization: "Bearer token in header",
+    },
+    {
+      name: "Widthdraw",
+      path: `/withdraw`,
+      url: `${baseURL}withdraw`,
+      method: "GET",
+      description: "Widthdraw or make payment with card",
+      data: "Card details, amount to widthraw",
+      authorization: "Bearer token in header",
+    },
+    {
+      name: "Deposit",
+      path: `/api/deposit`,
+      url: `${baseURL}deposit`,
+      method: "GET",
+      description: "Deposit Funds into your account to increase your balance",
+      data: "Card details, amount to deposit",
+      authorization: "Bearer token in header",
+    },
+
+  ]
+}
+
 
 // Export the module
 module.exports = helpers;

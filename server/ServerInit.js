@@ -80,7 +80,7 @@ class ServerInit {
             error: err.message
           })
         })
-      } else if (req.headers['content-type'].includes('multipart/form-data')) {
+      } else if (req.headers['content-type'] && req.headers['content-type'].includes('multipart/form-data')) {
         // Use latin1 encoding to parse binary files correctly
         req.setEncoding('latin1')
         await this.parseFormBodyData(req).then(() => {
@@ -89,9 +89,7 @@ class ServerInit {
       }
       else if (req.headers['content-type'] == "application/x-www-form-urlencoded") {
         await this.parseFormBody(req).then(() => {
-
           this.processRequest(req, responseObject, res, routes)
-
         })
       }
       else {

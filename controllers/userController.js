@@ -110,32 +110,32 @@ const validateCard = async (req, res) => {
   const { errors, data: cardData } = fieldValidator;
   if (!errors.length) {
     cardData.issuer = helpers.creditCardType(cardNumber) ? helpers.creditCardType(cardNumber) : 'Unknown';
-    console.log(helpers.creditCardType(cardNumber));
+    // console.log(helpers.creditCardType(cardNumber));
     const { err: readError, data: userData } = await dataBase.read('users', authData.email);
 
     // if (readError) {
     //   console.log({ readError });
     // }
-    // console.log({ userData });
-
-    if (userData.cards.length > 0 && helpers.hasUsedCardBefore(userData.cards, cardNumber)) {
-      userData.cards.forEach(card => {
-        if (card.cardNumber == cardData.cardNumber) {
-          // console.log({ message: "Formerly Used Card" });
-          card = JSON.parse(JSON.stringify(cardData));
+    const hasBeenUsedBefore = helpers.hasUsedCardBefore(userData.cards, cardNumber)
+    console.log({ userData, hasBeenUsedBefore });
+    if (userData.cards.length > 0 && hasBeenUsedBefore) {
+      for (let i = 0; i < userData.cards.length; i++) {
+        if (userData.cards[i]['cardNumber'] == cardData.cardNumber) {
+          userData.cards[i] = cardData
         }
-      });
+      }
+
     } else {
       userData.cards.push(cardData)
     }
     const { err: updateError } = await dataBase.update('users', authData.email, userData)
+
     if (!updateError) {
       res.status(200).send({ valid: true, message: "Valid Card", card: cardData })
     }
   } else {
     res.status(400).send({ valid: false, message: "Invalid Card", errors })
   }
-
 }
 
 const checkBalance = async (req, res) => {
@@ -143,11 +143,97 @@ const checkBalance = async (req, res) => {
 }
 
 const makeWidthdrawal = async (req, res) => {
+  const { authData } = req;
+  const { cardNumber, expirationDate, email, cvv2, phoneNumber, mobile, amount } = req.body;
+  const fieldValidator = new FieldValidator(req.body);
+  fieldValidator
+    .isValidCardNumber(cardNumber)
+    .isNotExpired(expirationDate)
+    .isValidEmail(email)
+    .isValidCVV(cvv2)
+    .checkMobileNumber(mobile)
+    .isLuhnValid(cardNumber)
 
+  const { errors: cardErrors, data: cardData } = fieldValidator;
+  if (isNaN(amount) || amount < 1) {
+    cardErrors.push({ amount: "Invalid deposit amount - please enter an number greater than 0" })
+  }
+  if (cardErrors.length) {
+    res.status(400).send({ valid: false, message: "Invalid Card", errors: cardErrors })
+    return;
+  }
+
+  cardData.issuer = helpers.creditCardType(cardNumber) ? helpers.creditCardType(cardNumber) : 'Unknown';
+
+  const { err: readError, data: userData } = await dataBase.read('users', authData.email);
+  if (userData.balance - Number(amount) < 0) {
+    res.status(400).send({ valid: false, message: "Insuffiencient Funds - You cannot withdraw more than your balance", amount, balance: userData.balance })
+    return
+  }
+  userData.balance -= Number(amount);
+  const hasBeenUsedBefore = helpers.hasUsedCardBefore(userData.cards, cardNumber)
+  console.log({ userData, hasBeenUsedBefore });
+  if (userData.cards.length > 0 && hasBeenUsedBefore) {
+    for (let i = 0; i < userData.cards.length; i++) {
+      if (userData.cards[i]['cardNumber'] == cardData.cardNumber) {
+        userData.cards[i] = cardData
+      }
+    }
+
+  } else {
+    userData.cards.push(cardData)
+  }
+
+  const { err: updateError } = await dataBase.update('users', authData.email, userData)
+  if (!updateError) {
+    res.status(200).send({ valid: true, message: "Successful Widthdrawal", card: cardData, amount, balance: userData.balance })
+    return
+  }
 }
 
 const makeDeposit = async (req, res) => {
+  const { authData } = req;
+  const { cardNumber, expirationDate, email, cvv2, phoneNumber, mobile, amount } = req.body;
+  const fieldValidator = new FieldValidator(req.body);
+  fieldValidator
+    .isValidCardNumber(cardNumber)
+    .isNotExpired(expirationDate)
+    .isValidEmail(email)
+    .isValidCVV(cvv2)
+    .checkMobileNumber(mobile)
+    .isLuhnValid(cardNumber)
 
+  const { errors: cardErrors, data: cardData } = fieldValidator;
+  if (isNaN(amount) || amount < 1) {
+    cardErrors.push({ amount: "Invalid deposit amount - please enter an number greater than 0" })
+  }
+  if (cardErrors.length) {
+    res.status(400).send({ valid: false, message: "Invalid Card", errors: cardErrors })
+    return;
+  }
+
+  cardData.issuer = helpers.creditCardType(cardNumber) ? helpers.creditCardType(cardNumber) : 'Unknown';
+
+  const { err: readError, data: userData } = await dataBase.read('users', authData.email);
+  userData.balance += Number(amount);
+  const hasBeenUsedBefore = helpers.hasUsedCardBefore(userData.cards, cardNumber)
+  console.log({ userData, hasBeenUsedBefore });
+  if (userData.cards.length > 0 && hasBeenUsedBefore) {
+    for (let i = 0; i < userData.cards.length; i++) {
+      if (userData.cards[i]['cardNumber'] == cardData.cardNumber) {
+        userData.cards[i] = cardData
+      }
+    }
+
+  } else {
+    userData.cards.push(cardData)
+  }
+
+  const { err: updateError } = await dataBase.update('users', authData.email, userData)
+  if (!updateError) {
+    res.status(200).send({ valid: true, message: "Successful Deposit", card: cardData, amount, balance: userData.balance })
+    return
+  }
 }
 
 module.exports = { registerUser, loginUser, getUser, validateCard, makeWidthdrawal, makeDeposit, checkBalance }
