@@ -10,10 +10,10 @@ I tried to implement it with concepts like Routing, Middleware, and Response met
 | S/N | Verb | Endpoint           | Description                                                |
 | ---:| ---- | ------------------ | ---------------------------------------------------------- |
 |   1 | Get  | /                  | Home route - API Info                                      |
-|   2 | Post | /api/register      | Register with username email and Password                  |
-|   3 | Post | /api/login         | Login with email and password to get auth token for header |
-|   4 | Get  | /api/token         | Requires Bearer Token - Get logged in user user info       |
-|   5 | Post | /api/validate-card | Validate Card info                                         |
+|   2 | Post | /api/register      | Register with `username` `email` and `Password`                  |
+|   3 | Post | /api/login         | Login with `email` and `password` to get `accessToken` for header |
+|   4 | Get  | /api/token         | Requires Bearer Token - Get logged in user info       |
+|   5 | Post | /api/validate-card | Validate Card details                                         |
 |   6 | Post | /api/deposit       | Requires Bearer token, valid card details and `amount` field             |
 |   7 | Post | /api/withdraw      | Requires Bearer token, valid card details and `amount` field                                                           |
 
